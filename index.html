@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Query string builder</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <style>
+        html {
+            background: black;
+            color: white;
+
+        }
+
+        * {
+
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: orange;
+            height: 70px;
+        }
+
+        #url {
+            padding: 2%;
+            background: #f8f8f8;
+            border: none;
+        }
+
+        #body {
+            margin: 0 33%;
+        }
+
+        #btn {
+            background: orange;
+            border: orange;
+            padding: 8px 12px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 style="text-align: center;color:black;padding-top:10px;">Enter your data and Generate the URL</h1>
+    </header>
+    <section id="body">
+        <br>
+        <br>
+        <h1>Enter Query and Param values in the following format</h1>
+        <br>
+        <br>
+        <p>utm_medium=medium1
+            <br>utm_source=src1</p>
+        <br>
+        <br>
+        <textarea name="data" id="form-data" cols="50" rows="10"></textarea>
+        <br>
+        <br>
+        <br>
+        <button id="btn">Generate the Querystring</button>
+        <br>
+        <br>
+        <br>
+        <textarea id="url" style="display: none;" cols="100" rows="1"></textarea>
+
+    </section>
+
+    <script>
+        $(document).ready(function () {
+
+            //This function displays the url on the screen
+            function displayURL(array) {
+                $("#url").show();
+                var url="/?";
+                for(i=0;i<array.length;i++){
+                let kv=array[i].split("=");
+                 url=url.length<3?url+kv[0]+"="+kv[1]:url+"&"+kv[0]+"="+kv[1]
+                }
+                return url;
+            }
+            //click event
+            $('#btn').on('click', function () {
+                var data = $("#form-data").val();
+                if (data != "") {
+                    var lines = data.split(/\n/);
+                    var keyValueArray = [];
+                    for (var i = 0; i < lines.length; i++) {
+                        // only push this line if it contains a non whitespace character.
+                        if (/\S/.test(lines[i])) {
+                            keyValueArray.push($.trim(lines[i]));
+                        }
+                    }
+                    $("#url").val(displayURL(keyValueArray));
+                }
+                else {
+                    alert("Please enter data");
+                }
+
+            });
+
+        });
+
+    </script>
+</body>
+
+</html>
